@@ -240,9 +240,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			String name, @Nullable Class<T> requiredType, @Nullable Object[] args, boolean typeCheckOnly)
 			throws BeansException {
 
+		//1. 解析出bean名称
 		String beanName = transformedBeanName(name);
 		Object bean;
 
+		//2. 从单例池中获取指定beanName的单例对象
 		// Eagerly check singleton cache for manually registered singletons.  早期检查单例缓存中手动注册的单例。
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
@@ -255,6 +257,11 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.debug("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
+			// 1.对于beanName为解引用类型，且instance为NullBean类型，直接返回instance
+			// 		（其中beanName为解引用类型，且instance不为FactoryBean类型，抛出异常）
+			// 2.对于instance不为FactoryBean类型，或者beanName为解引用类型，直接返回instance
+			// 3.剩余情况则是instance为FactoryBean类型，且beanName不是工厂解引用，
+			// 		则获取FactoryBean生产的bean
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
 
@@ -285,7 +292,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 			}
 
 			if (!typeCheckOnly) {
-				markBeanAsCreated(beanName); //1.根据bean名称移除mergedBeanDefinitions(合并bean定义集合)中的beanDefinition 2.将bean名称添加到已创建至少一次bean名称集合中
+				markBeanAsCreated(beanName); //1.根据bean名称移除mergedBeanDefinitions(合并bean定义集合)中的beanDefinition 2.将bean名称添加到已创建bean名称集合中
 			}
 
 			try {

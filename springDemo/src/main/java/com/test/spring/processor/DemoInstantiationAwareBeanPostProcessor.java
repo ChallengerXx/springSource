@@ -22,7 +22,7 @@ public class DemoInstantiationAwareBeanPostProcessor implements InstantiationAwa
 	 */
 	@Override
 	public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
-		System.out.println("execute postProcessBeforeInstantiation");
+		System.out.println("execute postProcessBeforeInstantiation, beanName = " + beanName);
 		return null;
 	}
 
@@ -36,19 +36,19 @@ public class DemoInstantiationAwareBeanPostProcessor implements InstantiationAwa
 	 */
 	@Override
 	public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
-		System.out.println("execute postProcessAfterInstantiation");
+		System.out.println("execute postProcessAfterInstantiation, beanName = " + beanName);
 		return true;
 	}
 
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("execute postProcessBeforeInitialization");
+		System.out.println("execute postProcessBeforeInitialization, beanName = " + beanName);
 		return bean;
 	}
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		System.out.println("execute postProcessAfterInitialization");
+		System.out.println("execute postProcessAfterInitialization, beanName = " + beanName);
 		return bean;
 	}
 }
